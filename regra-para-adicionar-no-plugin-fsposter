@@ -1,0 +1,26 @@
+# Rarysson: Inicia aqui
+if (isset($_SERVER['HTTP_X_FORWARDED_HOST']) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+    $forwarded = $_SERVER['HTTP_X_FORWARDED_HOST'];
+} elseif (isset($_SERVER['HTTP_X_FORWARDED_SERVER']) && !empty($_SERVER['HTTP_X_FORWARDED_SERVER'])) {
+    $forwarded = $_SERVER['HTTP_X_FORWARDED_SERVER'];
+} else {
+    $forwarded = $_SERVER['HTTP_HOST'];
+}
+
+// Verifica se é uma chamada vinda do plugin fs-poster
+$scriptName = $_SERVER['SCRIPT_NAME'];
+
+if (strpos($scriptName, 'fs-poster') !== false) {
+    // Força a URL pública do site, mesmo se estiver no painel
+    define('WP_HOME', URL_SITE);
+    define('WP_SITEURL', URL_SITE);
+} elseif (substr(dirname($_SERVER['PHP_SELF']), -15) == 'wp-admin' || isset($_GET['preview']) || strpos($forwarded, 'controle') !== false) {
+    // Painel, preview ou subdomínio 'controle' => usa URL do painel
+    define('WP_HOME', URL_CONTROLE);
+    define('WP_SITEURL', URL_CONTROLE);
+} else {
+    // Situação normal
+    define('WP_HOME', URL_SITE);
+    define('WP_SITEURL', URL_SITE);
+}
+# Rarysson: Termina aqui
