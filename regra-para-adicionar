@@ -1,0 +1,18 @@
+# Caso queira forçar a substituição por algum plugin específico, basta adicionar no array abaixo
+# define('FORCAR_URL_PLUGINS',[]);
+
+if (isset($_SERVER['HTTP_X_FORWARDED_HOST']) && !empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+    $forwarded = $_SERVER['HTTP_X_FORWARDED_HOST'];
+} elseif (isset($_SERVER['HTTP_X_FORWARDED_SERVER']) && !empty($_SERVER['HTTP_X_FORWARDED_SERVER'])) {
+    $forwarded = $_SERVER['HTTP_X_FORWARDED_SERVER'];
+} else {
+    $forwarded = $_SERVER['HTTP_HOST'];
+}
+
+if (substr(dirname($_SERVER['PHP_SELF']), -15) == 'wp-admin' || isset($_GET['preview']) || strpos($forwarded, 'controle') !== false) {
+    define('WP_HOME', URL_CONTROLE);
+    define('WP_SITEURL', URL_CONTROLE);
+} else {
+    define('WP_HOME', URL_SITE);
+    define('WP_SITEURL', URL_SITE);
+}
