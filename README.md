@@ -1,0 +1,1 @@
+# forca-url-publica-do-site-no-plugin
